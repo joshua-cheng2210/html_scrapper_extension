@@ -12,22 +12,12 @@
     "service_worker": "src/background.ts"
   },
   "action": {
-    "default_popup": "src/popup/popup.html",
-    "default_icon": {
-      "16": "icon16.png",
-      "48": "icon48.png",
-      "128": "icon128.png"
-    }
+    "default_popup": "src/popup/popup.html"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": ["https://canvas.umn.edu/courses/511424/quizzes/*"],
       "js": ["src/content/capture.ts"]
     }
-  ],
-  "icons": {
-    "16": "icon16.png",
-    "48": "icon48.png",
-    "128": "icon128.png"
-  }
+  ]
 }

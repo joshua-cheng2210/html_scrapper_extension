@@ -1,24 +1,34 @@
 const captureButton = document.getElementById('capture-button') as HTMLButtonElement | null;
 const statusMessage = document.getElementById('status-message') as HTMLElement | null;
+const outputFilename = document.getElementById('output-filename') as HTMLInputElement | null;
 
 if (captureButton) {
     captureButton.addEventListener('click', () => {
         // Send a message to the background service worker to capture the active tab.
         if (statusMessage) statusMessage.textContent = 'Capturing...';
+        if (outputFilename) outputFilename.value = '';
         try {
             chrome.runtime.sendMessage({ action: 'capture' }, (response: any) => {
                 if (chrome.runtime.lastError) {
-                    if (statusMessage) statusMessage.textContent = 'Error: ' + chrome.runtime.lastError.message;
+                    const msg = chrome.runtime.lastError.message || 'Unknown runtime error';
+                    if (statusMessage) statusMessage.textContent = 'Error: ' + msg;
+                    if (outputFilename) outputFilename.value = 'Error: ' + msg;
                     return;
                 }
                 if (response && response.success) {
-                    if (statusMessage) statusMessage.textContent = 'Saved: ' + (response.filename || 'download');
+                    const name = response.filename || 'download.html';
+                    if (statusMessage) statusMessage.textContent = 'Success: Saved as ' + name;
+                    if (outputFilename) outputFilename.value = name;
                 } else {
-                    if (statusMessage) statusMessage.textContent = 'Failed to capture the page.';
+                    const err = response && response.error ? String(response.error) : 'Failed to capture the page.';
+                    if (statusMessage) statusMessage.textContent = 'Error: ' + err;
+                    if (outputFilename) outputFilename.value = 'Error: ' + err;
                 }
             });
         } catch (e: any) {
-            if (statusMessage) statusMessage.textContent = 'Error: ' + (e && e.message ? e.message : String(e));
+            const msg = e && e.message ? e.message : String(e);
+            if (statusMessage) statusMessage.textContent = 'Error: ' + msg;
+            if (outputFilename) outputFilename.value = 'Error: ' + msg;
         }
     });
 } else {
