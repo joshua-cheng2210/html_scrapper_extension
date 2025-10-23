@@ -1,0 +1,26 @@
+{
+  "name": "chrome-capture-extension",
+  "version": "1.0.0",
+  "description": "A Chrome extension to capture and save webpage HTML.",
+  "main": "src/background.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "lint": "eslint .",
+    "test": "jest"
+  },
+  "keywords": [
+    "chrome",
+    "extension",
+    "capture",
+    "html"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chrome": "^0.1.24",
+    "eslint": "^7.0.0",
+    "jest": "^30.2.0",
+    "typescript": "^4.9.5"
+  }
+}
